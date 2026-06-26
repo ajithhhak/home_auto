@@ -11,8 +11,15 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase only if it hasn't been initialized yet
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+let app;
+let db = null;
 
-// Initialize Realtime Database and get a reference to the service
-export const db = getDatabase(app);
+if (typeof window !== "undefined" && firebaseConfig.apiKey && firebaseConfig.databaseURL) {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  db = getDatabase(app);
+} else if (firebaseConfig.apiKey && firebaseConfig.databaseURL) {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  db = getDatabase(app);
+}
+
+export { db };

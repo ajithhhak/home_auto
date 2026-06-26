@@ -20,8 +20,8 @@ export default function Home() {
 
   useEffect(() => {
     // Check if Firebase is configured properly
-    if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
-      setFeedback("Firebase API Key is missing in .env.local");
+    if (!db) {
+      setFeedback("Firebase is not configured. Please add env variables.");
       return;
     }
 
@@ -51,6 +51,7 @@ export default function Home() {
   }, []);
 
   const toggleRelay = (relayKey: string, currentState: number) => {
+    if (!db) return;
     const newState = currentState === 1 ? 0 : 1;
     set(ref(db, `/${relayKey}`), newState)
       .then(() => setFeedback(`Turned ${relayKey} ${newState === 1 ? 'ON' : 'OFF'}`))
@@ -62,6 +63,7 @@ export default function Home() {
 
   const handleVoiceCommand = (command: string) => {
     setFeedback(`Voice command: "${command}"`);
+    if (!db) return;
     
     // Command mappings
     if (command.includes("turn on relay one")) {
