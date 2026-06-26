@@ -50,7 +50,7 @@ export default function Home() {
     return () => unsubscribe();
   }, []);
 
-  const toggleRelay = (relayKey, currentState) => {
+  const toggleRelay = (relayKey: string, currentState: number) => {
     const newState = currentState === 1 ? 0 : 1;
     set(ref(db, `/${relayKey}`), newState)
       .then(() => setFeedback(`Turned ${relayKey} ${newState === 1 ? 'ON' : 'OFF'}`))
@@ -60,7 +60,7 @@ export default function Home() {
       });
   };
 
-  const handleVoiceCommand = (command) => {
+  const handleVoiceCommand = (command: string) => {
     setFeedback(`Voice command: "${command}"`);
     
     // Command mappings
